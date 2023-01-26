@@ -2,10 +2,11 @@
 #include <iostream>
 #include <iomanip>
 
+// Adds Item given the items product code
 void Cart::addItem( std::string productCode ) {
     bool exists = false;
     bool inCart = false;
-
+    // Checks to see if the item is already in the cart and increments its quantity if it is.
     for (auto& item : cart) {
         if (productCode == item.productCode) {
             inCart = true;
@@ -13,6 +14,7 @@ void Cart::addItem( std::string productCode ) {
             exists = true;
         }
     }
+    // Adds the item to the cart if its not already there
     if (!inCart) {
         for (auto& item : catalog) {
             if (item.code == productCode) {
@@ -22,14 +24,18 @@ void Cart::addItem( std::string productCode ) {
             }
         }
     }
-
+    // Throws an error if an invalid product code was given
     if (!exists)
         throw std::out_of_range("Product code does not match existing product.");
 }
 
+// Calculates the total cost of the items in the cart
 void Cart::calculateTotal( ) {
+    
+    // Adds up the cost of items
     for (auto& item : cart) {
         this->total += item.price * item.quantity;
+        // Checks to make sure there are no available discounts
         for (auto& offer : offers) {
             if (item.productCode == offer.productCode && item.quantity >= offer.quantReq) {
                 this->discount = item.price * offer.discount;
@@ -37,6 +43,7 @@ void Cart::calculateTotal( ) {
             }
         }
     }
+    // Calculates cost of shipping based on total
     int shippingIndex = 0;
     while (total >= std::get<0>(shippingPrices[shippingIndex]) && shippingIndex < shippingPrices.size()) {
         shippingIndex++;
