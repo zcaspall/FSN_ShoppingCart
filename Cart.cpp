@@ -31,14 +31,14 @@ void Cart::calculateTotal( ) {
     for (auto& item : cart) {
         this->total += item.price * item.quantity;
         for (auto& offer : offers) {
-            if (item.productCode == offer.productCode && item.quantity == offer.quantReq) {
+            if (item.productCode == offer.productCode && item.quantity >= offer.quantReq) {
                 this->discount = item.price * offer.discount;
                 this->total -= this->discount;
             }
         }
     }
     int shippingIndex = 0;
-    while (total >= std::get<0>(shippingPrices[shippingIndex])) {
+    while (total >= std::get<0>(shippingPrices[shippingIndex]) && shippingIndex < shippingPrices.size()) {
         shippingIndex++;
     }
     this->shipping = std::get<1>(shippingPrices[shippingIndex]);
