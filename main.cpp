@@ -7,7 +7,7 @@ int main() {
 
     std::string input;
     do {
-        std::cout << "Enter the product code for products you want one at a time: (Enter -1 to quit)";
+        std::cout << "Enter the product code for products you want one at a time (Enter -1 to quit): ";
         std::cin >> input;
         if(input != "-1") 
             cart.addItem(input);
